@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penilaian Tengah Semester 1 - PJOK Kelas 5 SD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .certificate {
+            border: 15px solid #1e40af;
+            border-image: linear-gradient(45deg, #1e40af, #3b82f6) 1;
+            background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(30, 64, 175, 0.1) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2393c5fd' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .certificate::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            width: 80%;
+            height: 80%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='none' stroke='%231e40af' stroke-width='2' d='M100 20a80 80 0 1 1 0 160 80 80 0 0 1 0-160zm0 10a70 70 0 1 0 0 140 70 70 0 0 0 0-140zm20 60a10 10 0 0 1 10 10v20a10 10 0 0 1-10 10H80a10 10 0 0 1-10-10V100a10 10 0 0 1 10-10h40zm-20 10a10 10 0 1 0 0 20 10 10 0 0 0 0-20z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.08;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .certificate > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .developer-info {
+            transition: all 0.5s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        
+        .developer-info.open {
+            max-height: 500px;
+        }
+        
+        .school-logo {
+            max-height: 80px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .community-logo {
+            max-height: 60px;
+            width: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        .developer-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #1e40af;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        #app-container {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-card {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+        }
+        
+        .welcome-title {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-card h3 {
+            color: #93c5fd;
+        }
+        
+        .feature-card p {
+            color: #e2e8f0;
+        }
+        
+        input, select {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid #475569;
+            color: #f8fafc;
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            outline: none;
+        }
+        
+        input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .option {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .option.selected {
+            background-color: rgba(59, 130, 246, 0.4);
+            border-color: #3b82f6;
+        }
+        
+        .option.correct {
+            background-color: rgba(34, 197, 94, 0.4);
+            border-color: #22c55e;
+        }
+        
+        .option.incorrect {
+            background-color: rgba(239, 68, 68, 0.4);
+            border-color: #ef4444;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .floating-element {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f59e0b;
+            opacity: 0;
+        }
+        
+        @media (max-width: 640px) {
+            .school-logo {
+                max-height: 60px;
+            }
+            
+            .community-logo {
+                max-height: 45px;
+            }
+            
+            .developer-photo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .certificate::before {
+                width: 90%;
+                height: 90%;
+            }
+            
+            .score-display {
+                font-size: 3rem;
+            }
+        }
+        
+        .certificate-title {
+            font-family: 'Brush Script MT', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .signature-line {
+            border-top: 2px solid #1e40af;
+            display: inline-block;
+            width: 150px;
+        }
+        
+        .qr-code {
+            border: 2px solid #1e40af;
+            border-radius: 8px;
+            padding: 5px;
+            background: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col py-4">
+    <!-- Header dengan Logo Sekolah dan Komunitas -->
+    <header class="container mx-auto px-4 mb-4">
+        <div class="bg-gray-800 rounded-2xl shadow-lg p-4">
+            <div class="flex justify-between items-center flex-wrap gap-4">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='10' fill='%231e40af'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3ESDN 008%3C/text%3E%3Ctext x='50' y='70' font-family='Arial' font-size='10' fill='white' text-anchor='middle'%3ESamarinda Ulu%3C/text%3E%3C/svg%3E" alt="Logo Sekolah" class="school-logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%233b82f6'/%3E%3Ctext x='50' y='45' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3EKurikulum%3C/text%3E%3Ctext x='50' y='60' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3EMerdeka%3C/text%3E%3C/svg%3E" alt="Logo Kumer" class="school-logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='10' fill='%2360a5fa'/%3E%3Ctext x='50' y='45' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3EKombel%3C/text%3E%3Ctext x='50' y='65' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3EMANTAP%3C/text%3E%3C/svg%3E" alt="Logo Komunitas Belajar" class="community-logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e40af'/%3E%3Ctext x='50' y='45' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3ETutwuri%3C/text%3E%3Ctext x='50' y='65' font-family='Arial' font-size='12' fill='white' text-anchor='middle'%3EHandayani%3C/text%3E%3C/svg%3E" alt="Logo Tutwuri" class="community-logo">
+            </div>
+        </div>
+    
+
+    <!-- Konten Utama Aplikasi -->
+    <main id="app-container" class="container mx-auto px-4 max-w-4xl flex-grow">
+        <!-- Layar Selamat Datang -->
+        <section id="welcomeScreen" class="screen active content-card p-6 md:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-extrabold mb-2 welcome-title">Penilaian Tengah Semester 1</h1>
+                <h2 class="text-xl md:text-2xl font-semibold text-blue-300 mb-4">Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK) Kelas 5 SD</h2>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Selamat datang di aplikasi Penilaian Tengah Semester 1</p>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto">Pelajari materinya, kerjakan soal, dan dapatkan sertifikatnya!</p>
+            </div>
+            
+            <div class="bg-blue-800 bg-opacity-30 rounded-xl p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 text-blue-300">Informasi Siswa</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Nama Lengkap</label>
+                        <input type="text" id="studentName" class="w-full p-3 rounded-lg" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Kelas</label>
+                        <select id="studentClass" class="w-full p-3 rounded-lg" required>
+                            <option value="">Pilih Kelas</option>
+                            <option value="5A">5A</option>
+                            <option value="5B">5B</option>
+                            <option value="5C">5C</option>
+                            <option value="5D">5D</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="feature-card p-6 text-center">
+                    <div class="floating-element mb-4">
+                        <i class="fas fa-book-open text-4xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Materi Pembelajaran</h3>
+                    <p>Pelajari materi dengan penjelasan yang mudah dipahami dan ilustrasi menarik.</p>
+                </div>
+                
+                <div class="feature-card p-6 text-center">
+                    <div class="floating-element mb-4">
+                        <i class="fas fa-pencil-alt text-4xl text-yellow-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Latihan Soal</h3>
+                    <p>Uji pemahamanmu dengan mengerjakan soal interaktif dengan sistem penilaian otomatis.</p>
+                </div>
+                
+                <div class="feature-card p-6 text-center">
+                    <div class="floating-element mb-4">
+                        <i class="fas fa-award text-4xl text-red-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Sertifikat Prestasi</h3>
+                    <p>Dapatkan sertifikat penilaian yang dapat diunduh setelah menyelesaikan soal.</p>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="startLearningButton" class="btn btn-primary text-white font-bold py-3 px-8 text-lg">Mulai Belajar <i class="ml-2 fas fa-arrow-right"></i></button>
+            </div>
+        </section>
+
+        <!-- Layar Materi Pembelajaran -->
+        <section id="materialScreen" class="screen content-card p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-300">Materi Pembelajaran: Permainan Invasi</h2>
+                <button id="backToWelcomeButton" class="btn bg-gray-700 text-gray-200 font-semibold py-2 px-4">Kembali</button>
+            </div>
+            
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 text-green-400">Apa itu Permainan Invasi?</h3>
+                <p class="mb-4">Permainan invasi adalah jenis permainan di mana dua tim berusaha untuk mencetak poin dengan menginvasi wilayah lawan. Tujuan utama adalah memasukkan objek (seperti bola) ke dalam area atau gawang lawan sambil mempertahankan area sendiri.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-blue-300">Contoh Permainan Invasi:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Sepak Bola</li>
+                            <li>Basket</li>
+                            <li>Hoki</li>
+                            <li>Rugby</li>
+                            <li>Handball</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-blue-300">Karakteristik:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Dua tim yang saling berhadapan</li>
+                            <li>Ada area/gawang yang harus dipertahankan</li>
+                            <li>Menggunakan objek (bola) untuk mencetak poin</li>
+                            <li>Memerlukan kerja sama tim</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 text-green-400">Keterampilan Dasar dalam Permainan Invasi</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-yellow-400">1. Menggiring (Dribbling)</h4>
+                        <p>Keterampilan mengontrol bola sambil bergerak. Dalam sepak bola menggunakan kaki, dalam basket menggunakan tangan.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-yellow-400">2. Mengoper (Passing)</h4>
+                        <p>Mengirim bola kepada rekan satu tim dengan akurat. Penting untuk membangun serangan yang efektif.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-yellow-400">3. Menembak (Shooting)</h4>
+                        <p>Keterampilan mencetak poin dengan memasukkan bola ke gawang atau ring lawan.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-2 text-yellow-400">4. Bertahan (Defending)</h4>
+                        <p>Keterampilan mencegah lawan mencetak poin dengan merebut bola atau menghalangi serangan.</p>
+                    </div>
+
+                    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8 text-green-400">Permainan Net</h1>
+        
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400">Apa itu Permainan Net?</h3>
+            <p class="mb-4">Permainan net adalah jenis permainan di mana dua tim atau pemain dipisahkan oleh jaring/net dan berusaha untuk mencetak poin dengan memantulkan, melempar, atau memukul objek (seperti bola, kok, atau shuttlecock) ke area lawan. Tujuan utama adalah membuat lawan tidak dapat mengembalikan objek tersebut dengan benar.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-blue-300">Contoh Permainan Net:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Bola Voli</li>
+                        <li>Bulutangkis</li>
+                        <li>Tenis</li>
+                        <li>Sepak Takraw</li>
+                        <li>Tenis Meja</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-blue-300">Karakteristik:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Dua tim/pemain yang dipisahkan net</li>
+                        <li>Ada area permainan yang dibatasi</li>
+                        <li>Menggunakan objek (bola, kok) untuk mencetak poin</li>
+                        <li>Memerlukan ketepatan dan strategi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400">Keterampilan Dasar dalam Permainan Net</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-yellow-400">1. Servis (Service)</h4>
+                    <p>Keterampilan memulai permainan dengan memukul atau melempar objek melewati net ke area lawan. Servis yang baik dapat memberikan keuntungan sejak awal permainan.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-yellow-400">2. Pukulan/Pantulan (Strokes)</h4>
+                    <p>Keterampilan mengembalikan objek yang datang dari lawan dengan berbagai teknik seperti smash, dropshot, atau drive sesuai jenis permainan.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-yellow-400">3. Posisi dan Pergerakan (Positioning and Footwork)</h4>
+                    <p>Keterampilan mengatur posisi dan bergerak efisien di area permainan untuk menjangkau objek yang datang dari lawan.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-yellow-400">4. Strategi dan Taktik</h4>
+                    <p>Keterampilan merencanakan serangan dan pertahanan, membaca permainan lawan, dan menempatkan objek di area yang sulit dijangkau lawan.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400">Perbedaan Permainan Net dan Permainan Invasi</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-gray-700 rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-gray-600">
+                            <th class="py-3 px-4 text-left">Aspek</th>
+                            <th class="py-3 px-4 text-left">Permainan Net</th>
+                            <th class="py-3 px-4 text-left">Permainan Invasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-600">
+                            <td class="py-3 px-4">Pemisah Area</td>
+                            <td class="py-3 px-4">Net/jaring</td>
+                            <td class="py-3 px-4">Tidak ada pemisah fisik</td>
+                        </tr>
+                        <tr class="border-b border-gray-600">
+                            <td class="py-3 px-4">Interaksi Fisik</td>
+                            <td class="py-3 px-4">Minimal/tidak ada kontak fisik</td>
+                            <td class="py-3 px-4">Kontak fisik sering terjadi</td>
+                        </tr>
+                        <tr class="border-b border-gray-600">
+                            <td class="py-3 px-4">Strategi Utama</td>
+                            <td class="py-3 px-4">Penempatan dan ketepatan</td>
+                            <td class="py-3 px-4">Penyerangan dan pertahanan area</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4">Contoh</td>
+                            <td class="py-3 px-4">Bola voli, bulutangkis</td>
+                            <td class="py-3 px-4">Sepak bola, basket</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6">
+            <h3 class="text-xl font-bold mb-4 text-green-400">Manfaat Bermain Permainan Net</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-blue-300">Manfaat Fisik:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Meningkatkan koordinasi mata-tangan</li>
+                        <li>Melatih kelincahan dan refleks</li>
+                        <li>Mengembangkan kekuatan otot</li>
+                        <li>Meningkatkan kesehatan kardiovaskular</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-2 text-blue-300">Manfaat Mental:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Melatih konsentrasi dan fokus</li>
+                        <li>Mengembangkan kemampuan strategi</li>
+                        <li>Meningkatkan disiplin diri</li>
+                        <li>Mengajarkan sportivitas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="startQuizButton" class="btn btn-success text-white font-bold py-3 px-8 text-lg">Mulai Latihan Soal <i class="ml-2 fas fa-play"></i></button>
+            </div>
+        </section>
+
+        <!-- Layar Kuis/Latihan Soal -->
+        <section id="quizScreen" class="screen content-card p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-300">Latihan Soal Permainan Invasi</h2>
+                <div class="flex items-center space-x-2">
+                    <span id="questionCounter" class="bg-blue-600 text-white font-bold py-1 px-3 rounded-full">1/10</span>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex justify-between text-sm mb-1">
+                    <span>Progress</span>
+                    <span id="progressPercent">10%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 10%"></div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+                <h3 id="questionText" class="text-xl font-bold mb-6">Pertanyaan akan muncul di sini</h3>
+                
+                <div id="optionsContainer" class="space-y-4">
+                    <!-- Opsi jawaban akan diisi oleh JavaScript -->
+                </div>
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="prevQuestionButton" class="btn bg-gray-600 text-white font-semibold py-2 px-4 disabled:opacity-50" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Soal Sebelumnya
+                </button>
+                <button id="nextQuestionButton" class="btn btn-primary text-white font-semibold py-2 px-4">
+                    Soal Berikutnya<i class="ml-2 fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Layar Hasil -->
+        <section id="resultScreen" class="screen content-card p-6 md:p-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-blue-300">Hasil Latihan Soal</h2>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 max-w-md mx-auto">
+                    <div class="score-display mb-2" id="finalScore">0%</div>
+                    <div class="text-lg mb-4" id="scoreMessage">Pesan hasil akan muncul di sini</div>
+                    <div id="studentInfo" class="text-sm text-gray-400"></div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4 text-center text-green-400">Ringkasan Jawaban</h3>
+                <div id="answerSummary" class="space-y-4">
+                    <!-- Ringkasan jawaban akan diisi oleh JavaScript -->
+                </div>
+            </div>
+            
+            <div class="text-center space-x-4">
+                <button id="viewCertificateButton" class="btn btn-warning text-white font-bold py-3 px-6 text-lg">
+                    <i class="fas fa-award mr-2"></i>Lihat Sertifikat
+                </button>
+                <button id="retryQuizButton" class="btn btn-primary text-white font-bold py-3 px-6 text-lg">
+                    <i class="fas fa-redo mr-2"></i>Ulangi Latihan
+                </button>
+            </div>
+        </section>
+
+        <!-- Layar Sertifikat -->
+        <section id="sertifikatScreen" class="screen content-card p-4 md:p-6">
+            <div class="flex justify-between items-center mb-4">
+                <button id="backToResultButton" class="btn bg-gray-700 text-gray-200 font-semibold py-2 px-4">
+                    <i class="fas fa-arrow-left mr-2"></i>Kembali
+                </button>
+                <button id="printCertificateButton" class="btn btn-primary text-white font-bold py-2 px-4">
+                    <i class="fas fa-print mr-2"></i>Cetak/Simpan
+                </button>
+            </div>
+            <div id="certificateWrapper" class="certificate">
+                <div class="text-center">
+                    <h1 class="text-3xl md:text-5xl font-bold text-yellow-500 certificate-title">Sertifikat Prestasi</h1>
+                    <p class="text-lg md:text-xl mt-6 text-blue-900">Diberikan kepada:</p>
+                    <h2 id="certStudentName" class="text-4xl md:text-6xl font-extrabold my-6 text-blue-800"></h2>
+                    <p class="text-lg md:text-xl text-blue-900">Telah menyelesaikan soal PJOK Penilaian Tengah Semester 1
+                    <h3 id="certTopic" class="text-2xl md:text-4xl font-bold my-4 text-blue-700">Permainan Invasi dan Permainan Net - PJOK Kelas 5</h3>
+                    <p class="text-lg md:text-xl text-blue-900">dengan nilai </p>
+                    <p id="certScore" class="text-6xl md:text-8xl font-extrabold my-6 text-green-600"></p>
+                    <div class="flex justify-around items-end mt-16 text-blue-900">
+                        <div class="text-center">
+                            <p class="font-semibold">Kepala Sekolah</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Kepala%20Sekolah%20SDN%20Teladan%20-%20Telah%20Diverifikasi" alt="QR Code Kepala Sekolah" class="qr-code mx-auto my-2">
+                            <p class="mt-2 signature-line">Dr.Chelda Yuliana,M.Pd</p>
+                        </div>
+                        <div class="text-center">
+                            <p id="certDate" class="mb-4 font-semibold"></p>
+                            <p class="font-semibold">Guru PJOK</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=Guru%20PJOK%20-%20Telah%20Diverifikasi" alt="QR Code Guru PJOK" class="qr-code mx-auto my-2">
+                            <p class="mt-2 signature-line">Riko Trisusilo,S.Pd.Gr</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer dengan Biodata Pengembang -->
+    <footer class="bg-gray-800 text-white py-6 mt-4">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-4">
+                <button id="toggleDeveloperInfo" class="btn bg-blue-700 hover:bg-blue-600 text-white font-semibold py-2 px-4">
+                    <i class="fas fa-info-circle mr-2"></i>Info Pengembang
+                </button>
+            </div>
+            <div id="developerInfo" class="developer-info max-w-4xl mx-auto text-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center p-4">
+                    <div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ccircle cx='75' cy='75' r='70' fill='%231e40af'/%3E%3Ctext x='75' y='80' font-family='Arial' font-size='40' fill='white' text-anchor='middle'%3ERIKO%3C/text%3E%3C/svg%3E" alt="Foto Pengembang" class="developer-photo mx-auto">
+                        <h3 class="text-xl font-bold">Riko Trisusilo,S.Pd.Gr</h3>
+                        <p class="text-blue-300">Guru PJOK SDN 008 Samarinda Ulu</p>
+                    </div>
+                    <div class="md:col-span-2 text-left">
+                        <p class="mb-2"><i class="fas fa-graduation-cap mr-2 text-blue-400"></i><strong>Pendidikan:</strong> S1 Pendidikan Kepelatihan Olahraga</p>
+                        <p class="mb-2"><i class="fas fa-envelope mr-2 text-blue-400"></i><strong>Kontak:</strong> rikotrisusilo13@guru.sd.belajar.id</p>
+                        <p class="mb-2"><i class="fas fa-star mr-2 text-blue-400"></i><strong>Versi Aplikasi:</strong> 1.2025</p>
+                        <p><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i><strong>Alamat:</strong> Jl. Kedondong Voorfo, Kota Samarinda</p>
+                        
+                      </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-700">
+                    <p class="text-sm text-gray-400">Aplikasi ini dikembangkan sebagai bagian dari program pengembangan media pembelajaran digital di SDN 008 Samarinda Ulu.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data soal latihan
+        const quizQuestions = [
+            
+    // SOAL PERMAINAN INVASI (1-17)
+    {
+        question: "Dalam permainan basket, tim A berhasil merebut bola dari tim B di area pertahanan tim B. Strategi apa yang paling tepat dilakukan tim A untuk mencetak poin dengan cepat?",
+        options: [
+            "Melakukan permainan lambat untuk mengatur serangan",
+            "Segera melakukan serangan balik (fast break)",
+            "Bermain aman dengan operan pendek",
+            "Menunggu pemain bertahan berkumpul"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa kelemahan utama dari strategi menyerang secara individu tanpa kerja sama dalam permainan invasi?",
+        options: [
+            "Pemain menjadi lebih lelah",
+            "Mudah diantisipasi oleh pertahanan lawan yang terorganisir",
+            "Peluang mencetak poin lebih besar",
+            "Tidak memerlukan komunikasi dengan rekan tim"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam situasi sepak bola dimana tim unggul 1-0 dengan waktu tinggal 5 menit, strategi apa yang paling efektif?",
+        options: [
+            "Tetap menyerang untuk menambah gol",
+            "Bermain defensif dan menjaga possession bola",
+            "Mengganti semua penyerang dengan pemain bertahan",
+            "Mengoper bola ke area pertahanan sendiri terus menerus"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa dalam permainan invasi seperti rugby, formasi pertahanan yang rapat lebih efektif daripada formasi yang menyebar?",
+        options: [
+            "Karena lebih mudah melakukan serangan balik",
+            "Karena dapat menutup ruang gerak lawan lebih baik",
+            "Karena pemain tidak perlu berlari jauh",
+            "Karena lebih hemat energi"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam permainan hoki, apa yang terjadi jika semua pemain hanya fokus menyerang tanpa memperhatikan pertahanan?",
+        options: [
+            "Tim akan mencetak lebih banyak gol",
+            "Tim rentan terhadap serangan balik lawan",
+            "Permainan menjadi lebih menarik",
+            "Pemain akan lebih kreatif dalam menyerang"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa variasi kecepatan dalam menggiring bola penting dalam permainan basket?",
+        options: [
+            "Agar pemain tidak terlalu lelah",
+            "Untuk membingungkan pemain bertahan lawan",
+            "Karena peraturan mengharuskan perubahan kecepatan",
+            "Agar wasit tidak curiga"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa keuntungan menggunakan sistem zonasi dibanding man-to-man marking dalam pertahanan permainan invasi?",
+        options: [
+            "Setiap pemain bebas bergerak kemana saja",
+            "Dapat mengcover area yang lebih efektif",
+            "Tidak perlu komunikasi antar pemain",
+            "Pemain menjadi lebih kreatif"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam situasi 2 lawan 1 pada permainan sepak bola, mengapa operan kepada rekan tim lebih efektif daripada mencoba melewati pemain bertahan sendirian?",
+        options: [
+            "Karena lebih menunjukkan kemampuan individu",
+            "Karena peluang mencetak gol lebih besar",
+            "Karena lebih menghemat tenaga",
+            "Karena wasit akan memberikan hadiah tendangan penalti"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa dampak jika seorang pemain tidak memahami peran dan posisinya dalam permainan invasi?",
+        options: [
+            "Permainan menjadi lebih spontan dan kreatif",
+            "Terjadi tumpang tindih area dan kekosongan pertahanan",
+            "Setiap pemain bebas menyerang kapan saja",
+            "Tim akan lebih sulit dikalahkan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa timing dalam melakukan pressing (penekanan) terhadap lawan sangat penting dalam permainan invasi?",
+        options: [
+            "Karena dapat menghemat energi pemain",
+            "Karena dapat memaksakan kesalahan lawan saat mereka lengah",
+            "Karena wasit akan memberikan peringatan",
+            "Karena lawan akan takut dan menyerah"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam permainan handball, apa yang harus dilakukan penyerang ketika menghadapi pertahanan yang sangat rapat?",
+        options: [
+            "Terus memaksakan tembakan dari jarak jauh",
+            "Mencari celah dengan pergerakan tanpa bola dan operan cepat",
+            "Bermain individu dengan menggiring bola",
+            "Menunggu lawan membuat kesalahan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa transisi dari bertahan ke menyerang harus dilakukan dengan cepat dalam permainan invasi?",
+        options: [
+            "Agar pemain tidak terlalu lelah",
+            "Untuk mengeksploitasi ketidaksiapan pertahanan lawan",
+            "Karena peraturan membatasi waktu possession",
+            "Agar penonton tidak bosan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa kelebihan sistem penyerangan dengan rotasi pemain dibanding sistem statis?",
+        options: [
+            "Pemain dapat beristirahat lebih sering",
+            "Dapat membingungkan sistem pertahanan lawan",
+            "Tidak perlu komunikasi antar pemain",
+            "Wasit akan kesulitan mengawasi pergerakan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam permainan basket, mengapa screen (block) sangat efektif dalam membuka ruang untuk tembakan?",
+        options: [
+            "Karena pemain bertahan akan dihukum wasit",
+            "Karena dapat membebaskan shooter dari penjagaan lawan",
+            "Karena pemain yang melakukan screen bisa langsung menerima operan",
+            "Karena wasit tidak akan melihat pelanggaran"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa yang terjadi jika sebuah tim hanya mengandalkan satu strategi serangan dalam permainan invasi?",
+        options: [
+            "Tim akan selalu menang",
+            "Strategi mudah diprediksi dan diantisipasi lawan",
+            "Pemain menjadi lebih ahli dalam strategi tersebut",
+            "Wasit akan memberikan poin bonus"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa komunikasi nonverbal penting dalam permainan invasi?",
+        options: [
+            "Karena suara tidak terdengar di lapangan yang ramai",
+            "Karena gerakan seringkali lebih cepat daripada instruksi verbal",
+            "Karena wasit melarang komunikasi verbal",
+            "Karena pemain dari negara berbeda tidak memahami bahasa yang sama"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa keuntungan menggunakan umpan-umpan pendek dan cepat dalam membangun serangan?",
+        options: [
+            "Pemain tidak perlu berlari jauh",
+            "Dapat memecah konsentrasi dan formasi pertahanan lawan",
+            "Wasit akan memberikan hadiah corner kick",
+            "Penonton lebih menyukai permainan seperti itu"
+        ],
+        correctAnswer: 1
+    },
+
+    // SOAL PERMAINAN NET (18-35)
+    {
+        question: "Dalam permainan bulutangkis, mengapa variasi pukulan (dropshot, smash, clear) sangat penting?",
+        options: [
+            "Agar lawan tidak bisa memprediksi pukulan berikutnya",
+            "Karena peraturan mengharuskan variasi pukulan",
+            "Agar pertandingan tidak membosankan",
+            "Karena wasit akan memberikan peringatan jika tidak bervariasi"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Apa strategi yang tepat dalam tenis meja ketika lawan selalu bermain jauh dari meja?",
+        options: [
+            "Selalu melakukan smash keras",
+            "Memainkan dropshot pendek ke sudut meja",
+            "Bermain aman dengan push ball terus menerus",
+            "Meminta time out untuk mengganggu konsentrasi lawan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa dalam bola voli, blocking yang tepat waktu lebih efektif daripada blocking yang asal lompat?",
+        options: [
+            "Karena lebih menghemat tenaga",
+            "Karena dapat membaca arah serangan lawan dan menutup sudut tembakan",
+            "Karena wasit akan memberikan poin otomatis",
+            "Karena lawan akan takut dan melakukan kesalahan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam situasi 24-24 pada set ketiga bulutangkis, pukulan apa yang paling berisiko dilakukan?",
+        options: [
+            "Clear tinggi ke belakang lapangan",
+            "Smash keras ke tengah lapangan",
+            "Dropshot sangat halus di net",
+            "Serve pendek ke depan"
+        ],
+        correctAnswer: 2
+    },
+    {
+        question: "Apa kelemahan utama dari pemain yang hanya mengandalkan kekuatan tanpa strategi dalam permainan net?",
+        options: [
+            "Cepat lelah dan mudah diprediksi lawan",
+            "Selalu menang dengan mudah",
+            "Tidak perlu berpikir selama permainan",
+            "Wasit akan memberikan bonus poin"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Mengapa dalam sepak takraw, servis yang menukik dan sulit diterima menjadi senjata utama?",
+        options: [
+            "Karena pemain lawan pasti tidak bisa mengembalikan",
+            "Karena dapat langsung menghasilkan poin atau memaksa lawan melakukan pengembalian lemah",
+            "Karena wasit akan memberikan peringatan kepada lawan",
+            "Karena penonton sangat menyukainya"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Dalam tenis, mengapa penting untuk memvariasi spin (putaran) pada pukulan?",
+        options: [
+            "Agar raket tidak cepat rusak",
+            "Untuk mempersulit lawan dalam mengantisipasi arah dan pantulan bola",
+            "Karena peraturan mengharuskan perubahan spin",
+            "Agar wasit tetap fokus pada permainan"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa yang harus dilakukan ketika menghadapi lawan yang selalu bermain di net dalam tenis?",
+        options: [
+            "Selain melakukan lob untuk melewati lawan",
+            "Terus melakukan passing shot rendah",
+            "Bermain aman dengan baseline rally",
+            "Meminta wasit untuk menegur lawan"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Mengapa footwork yang baik sangat krusial dalam permainan net seperti bulutangkis?",
+        options: [
+            "Karena dapat mencapai shuttlecock dengan posisi tubuh yang balanced untuk pukulan berkualitas",
+            "Karena membuat penampilan lebih indah",
+            "Karena wasit akan mengurangi poin lawan jika footwork bagus",
+            "Karena dapat mengelabui lawan dengan gerakan tipuan"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Dalam bola voli, mengapa sistem pertahanan dengan libero lebih efektif daripada tanpa libero?",
+        options: [
+            "Karena libero bisa melakukan smash",
+            "Karena libero khusus untuk pertahanan dan reception yang lebih stabil",
+            "Karena libero boleh menyentuh bola berkali-kali",
+            "Karena wasit tidak akan menghitung kesalahan libero"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa strategi yang tepat dalam tenis meja melawan lawan yang sangat agresif?",
+        options: [
+            "Bermain lebih agresif",
+            "Memainkan bola pendek dan variasi spin untuk mengganggu ritme lawan",
+            "Selain melakukan smash keras",
+            "Meminta time out berulang kali"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa dalam bulutangkis, pukulan keempat sudut lapangan lebih efektif daripada selalu ke area yang sama?",
+        options: [
+            "Karena dapat memaksa lawan bergerak dan membuka ruang kosong",
+            "Karena wasit akan memberikan poin bonus",
+            "Karena lawan akan kesulitan melihat shuttlecock",
+            "Karena raket lawan akan cepat rusak"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Dalam situasi critical point bola voli, mengapa servis yang aman seringkali lebih dipilih daripada servis agresif?",
+        options: [
+            "Karena wasit tidak akan menghukum kesalahan",
+            "Karena menghindari risiko kesalahan servis dan memberikan kesempatan tim bertahan",
+            "Karena pemain lawan pasti tidak bisa menerima servis",
+            "Karena pelatih selalu meminta servis aman"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa keuntungan menggunakan deception (tipuan) dalam pukulan bulutangkis?",
+        options: [
+            "Wasit akan memberikan poin tambahan",
+            "Dapat mengecoh lawan dan menciptakan ruang kosong",
+            "Pemain tidak perlu latihan fisik keras",
+            "Raket akan awet dan tidak cepat rusak"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa dalam tenis, kemampuan membaca serve lawan sangat penting?",
+        options: [
+            "Agar bisa memprotes serve lawan ke wasit",
+            "Karena dapat mengantisipasi arah dan memulai rally dengan baik",
+            "Karena pemain boleh memilih tidak menerima serve",
+            "Karena wasit akan mengulang serve jika dibaca dengan baik"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa yang terjadi jika dalam sepak takraw, pemain hanya mengandalkan kekuatan tendangan tanpa memperhatikan penempatan?",
+        options: [
+            "Selalu menghasilkan poin",
+            "Bola mudah dibaca dan ditangkis oleh lawan",
+            "Wasit akan memberikan peringatan",
+            "Penonton akan memberikan standing ovation"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Mengapa dalam bola voli, setter memiliki peran yang sangat vital?",
+        options: [
+            "Karena setter selalu menjadi kapten tim",
+            "Karena setter mengatur ritme permainan dan menciptakan peluang untuk smasher",
+            "Karena setter boleh menyentuh bola berkali-kali",
+            "Karena wasit tidak akan menghitung kesalahan setter"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Apa strategi efektif dalam bulutangkis melawan lawan yang memiliki smash sangat keras?",
+        options: [
+            "Selain mengembalikan dengan smash yang lebih keras",
+            "Memainkan pukulan pendek dan memaksa lawan bergerak maju-mundur",
+            "Bermain di net terus menerus",
+            "Meminta wasit untuk memperingati lawan"
+        ],
+        correctAnswer: 1
+    }
+];
+
+        // Variabel state aplikasi
+        let currentScreen = 'welcome';
+        let studentName = '';
+        let studentClass = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+
+        // Elemen DOM
+        const screens = document.querySelectorAll('.screen');
+        const studentNameInput = document.getElementById('studentName');
+        const studentClassSelect = document.getElementById('studentClass');
+        
+        const startLearningButton = document.getElementById('startLearningButton');
+        const backToWelcomeButton = document.getElementById('backToWelcomeButton');
+        const startQuizButton = document.getElementById('startQuizButton');
+        const prevQuestionButton = document.getElementById('prevQuestionButton');
+        const nextQuestionButton = document.getElementById('nextQuestionButton');
+        const viewCertificateButton = document.getElementById('viewCertificateButton');
+        const retryQuizButton = document.getElementById('retryQuizButton');
+        const backToResultButton = document.getElementById('backToResultButton');
+        const printCertificateButton = document.getElementById('printCertificateButton');
+        
+        const questionCounter = document.getElementById('questionCounter');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        
+        const finalScore = document.getElementById('finalScore');
+        const scoreMessage = document.getElementById('scoreMessage');
+        const studentInfo = document.getElementById('studentInfo');
+        const answerSummary = document.getElementById('answerSummary');
+        
+        const certStudentName = document.getElementById('certStudentName');
+        const certScore = document.getElementById('certScore');
+        const certDate = document.getElementById('certDate');
+        
+        const toggleDeveloperInfo = document.getElementById('toggleDeveloperInfo');
+        const developerInfo = document.getElementById('developerInfo');
+
+        // Fungsi untuk menampilkan layar tertentu
+        function showScreen(screenName) {
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            document.getElementById(screenName + 'Screen').classList.add('active');
+            currentScreen = screenName;
+            
+            // Scroll ke atas halaman
+            window.scrollTo(0, 0);
+        }
+
+        // Fungsi untuk memuat soal
+        function loadQuestion(index) {
+            const question = quizQuestions[index];
+            questionText.textContent = question.question;
+            questionCounter.textContent = `${index + 1}/${quizQuestions.length}`;
+            
+            // Perbarui progress bar
+            const progress = ((index + 1) / quizQuestions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.round(progress)}%`;
+            
+            // Kosongkan kontainer opsi
+            optionsContainer.innerHTML = '';
+            
+            // Tambahkan opsi jawaban
+            question.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = `option p-4 rounded-lg border-2`;
+                optionElement.textContent = option;
+                
+                // Tandai jika sudah dijawab
+                if (userAnswers[index] !== undefined && userAnswers[index] === optionIndex) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.addEventListener('click', () => {
+                    // Hapus seleksi dari semua opsi
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Tandai opsi yang dipilih
+                    optionElement.classList.add('selected');
+                    userAnswers[index] = optionIndex;
+                    
+                    // Perbarui status tombol navigasi
+                    updateNavigationButtons();
+                });
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Perbarui status tombol navigasi
+            updateNavigationButtons();
+        }
+
+        // Fungsi untuk memperbarui status tombol navigasi
+        function updateNavigationButtons() {
+            // Tombol sebelumnya
+            prevQuestionButton.disabled = currentQuestionIndex === 0;
+            
+            // Tombol berikutnya
+            if (currentQuestionIndex === quizQuestions.length - 1) {
+                nextQuestionButton.innerHTML = 'Selesai <i class="ml-2 fas fa-check"></i>';
+            } else {
+                nextQuestionButton.innerHTML = 'Soal Berikutnya <i class="ml-2 fas fa-arrow-right"></i>';
+            }
+        }
+
+        // Fungsi untuk menampilkan hasil
+        function showResults() {
+            // Hitung skor
+            score = 0;
+            quizQuestions.forEach((question, index) => {
+                if (userAnswers[index] === question.correctAnswer) {
+                    score++;
+                }
+            });
+            
+            const percentage = (score / quizQuestions.length) * 100;
+            finalScore.textContent = `${percentage.toFixed(0)}%`;
+            
+            // Tentukan pesan berdasarkan skor
+            if (percentage >= 75) {
+                scoreMessage.textContent = 'Sangat Baik! Kamu menguasai materi.';
+                scoreMessage.className = 'text-lg mb-4 text-green-400 font-semibold';
+            } else if (percentage >= 60) {
+                scoreMessage.textContent = 'Baik! Kamu sudah memahami materi, tapi masih perlu sedikit belajar lagi.';
+                scoreMessage.className = 'text-lg mb-4 text-yellow-400 font-semibold';
+            } else {
+                scoreMessage.textContent = 'Kamu perlu belajar lagi. Jangan menyerah!';
+                scoreMessage.className = 'text-lg mb-4 text-red-400 font-semibold';
+            }
+            
+            // Tampilkan info siswa
+            studentInfo.textContent = `${studentName} - Kelas ${studentClass}`;
+            
+            // Tampilkan ringkasan jawaban
+            answerSummary.innerHTML = '';
+            quizQuestions.forEach((question, index) => {
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'p-4 rounded-lg border-2';
+                
+                const isCorrect = userAnswers[index] === question.correctAnswer;
+                summaryItem.classList.add(isCorrect ? 'border-green-500 bg-green-900 bg-opacity-20' : 'border-red-500 bg-red-900 bg-opacity-20');
+                
+                summaryItem.innerHTML = `
+                    <div class="font-semibold mb-2">${index + 1}. ${question.question}</div>
+                    <div class="mb-1">Jawaban kamu: <span class="${isCorrect ? 'text-green-400' : 'text-red-400'}">${question.options[userAnswers[index]]}</span></div>
+                    ${!isCorrect ? `<div class="mb-1">Jawaban benar: <span class="text-green-400">${question.options[question.correctAnswer]}</span></div>` : ''}
+                `;
+                
+                answerSummary.appendChild(summaryItem);
+            });
+            
+            // Tampilkan efek konfeti jika nilai tinggi
+            if (percentage >= 75) {
+                createConfetti();
+            }
+        }
+
+        // Fungsi untuk menampilkan sertifikat
+        function showCertificate() {
+            certStudentName.textContent = studentName;
+            certScore.textContent = `${((score / quizQuestions.length) * 100).toFixed(0)}%`;
+            
+            // Format tanggal
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            certDate.textContent = `Tanggal: ${now.toLocaleDateString('id-ID', options)}`;
+        }
+
+        // Fungsi untuk membuat efek konfeti
+        function createConfetti() {
+            const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6'];
+            const container = document.getElementById('resultScreen');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.opacity = '1';
+                
+                container.appendChild(confetti);
+                
+                // Animasi konfeti
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                });
+                
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+
+        // Fungsi untuk menyimpan/mencetak sertifikat
+        function printCertificate() {
+            html2canvas(document.getElementById('certificateWrapper'), {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Sertifikat-Permainan-Invasi-${studentName}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // Event Listeners
+        startLearningButton.addEventListener('click', () => {
+            studentName = studentNameInput.value.trim();
+            studentClass = studentClassSelect.value;
+            
+            if (!studentName || !studentClass) {
+                alert('Harap isi nama lengkap dan pilih kelas terlebih dahulu!');
+                return;
+            }
+            
+            showScreen('material');
+        });
+        
+        backToWelcomeButton.addEventListener('click', () => {
+            showScreen('welcome');
+        });
+        
+        startQuizButton.addEventListener('click', () => {
+            // Reset state kuis
+            currentQuestionIndex = 0;
+            userAnswers = Array(quizQuestions.length).fill(undefined);
+            showScreen('quiz');
+            loadQuestion(currentQuestionIndex);
+        });
+        
+        prevQuestionButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+        
+        nextQuestionButton.addEventListener('click', () => {
+            if (userAnswers[currentQuestionIndex] === undefined) {
+                alert('Silakan pilih jawaban terlebih dahulu!');
+                return;
+            }
+            
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                // Selesai mengerjakan soal
+                showScreen('result');
+                showResults();
+            }
+        });
+        
+        viewCertificateButton.addEventListener('click', () => {
+            showScreen('sertifikat');
+            showCertificate();
+        });
+        
+        retryQuizButton.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin mengulang latihan soal?')) {
+                // Reset state kuis
+                currentQuestionIndex = 0;
+                userAnswers = Array(quizQuestions.length).fill(undefined);
+                showScreen('quiz');
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+        
+        backToResultButton.addEventListener('click', () => {
+            showScreen('result');
+        });
+        
+        printCertificateButton.addEventListener('click', printCertificate);
+        
+        toggleDeveloperInfo.addEventListener('click', () => {
+            developerInfo.classList.toggle('open');
+            if (developerInfo.classList.contains('open')) {
+                toggleDeveloperInfo.innerHTML = '<i class="fas fa-times mr-2"></i>Tutup Info Pengembang';
+            } else {
+                toggleDeveloperInfo.innerHTML = '<i class="fas fa-info-circle mr-2"></i>Info Pengembang';
+            }
+        });
+
+        // Inisialisasi aplikasi
+        showScreen('welcome');
+    </script>
+</body>
+</html>
